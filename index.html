@@ -2,124 +2,159 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>BLACKBIRD // SOUND_SHREDDER.V3</title>
+    <title>BLACKBIRD // GOD_MODE_V4</title>
     <style>
-        body {
-            background: #fff; color: #000; font-family: "Tahoma", sans-serif;
-            margin: 0; overflow: hidden; height: 100vh;
-        }
-        /* TOP BANNER */
-        .header {
-            background: #0055aa; color: #fff; padding: 10px;
-            font-weight: bold; border-bottom: 4px solid #000;
-            display: flex; justify-content: space-between;
-        }
-        /* LAYOUT */
-        .main { display: grid; grid-template-columns: 1fr 350px; height: calc(100% - 45px); }
+        :root { --win-blue: #0055aa; --win-grey: #ced4da; --win-border: #212529; }
+        body { background: #5a7edc; font-family: "Tahoma", "Segoe UI", sans-serif; margin: 0; overflow: hidden; height: 100vh; }
         
-        /* SOUND GRID (80+ Buttons) */
-        .sound-grid {
-            padding: 15px; overflow-y: auto; display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-            gap: 8px; background: #eee; border-right: 3px solid #000;
-        }
-        .btn {
-            background: #ddd; border: 2px outset #fff; padding: 10px;
-            font-size: 10px; font-weight: bold; cursor: pointer;
-            text-align: center; box-shadow: 2px 2px 0 #000;
-            transition: transform 0.1s;
-        }
-        .btn:active { border: 2px inset #fff; transform: scale(0.95); }
+        /* TASKBAR AESTHETIC */
+        .taskbar { background: var(--win-blue); color: white; padding: 5px 15px; font-weight: bold; border-bottom: 3px solid #000; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
+        
+        /* MAIN INTERFACE */
+        .desktop { display: grid; grid-template-columns: 1fr 400px; height: calc(100vh - 45px); padding: 10px; gap: 10px; }
 
-        /* SIDEBAR / EXECUTOR */
-        .sidebar { padding: 15px; background: #fff; display: flex; flex-direction: column; }
-        #viewpoint { flex: 1; border: 2px solid #000; padding: 10px; font-family: monospace; background: #fafafa; }
-        textarea { width: 100%; height: 80px; border: 2px solid #000; margin-top: 10px; }
+        /* WINDOW STYLING */
+        .window { background: var(--win-grey); border: 3px outset #fff; box-shadow: 4px 4px 0 #000; display: flex; flex-direction: column; }
+        .window-header { background: linear-gradient(90deg, #000080, #1084d0); color: white; padding: 4px 8px; font-size: 13px; font-weight: bold; display: flex; justify-content: space-between; }
+
+        /* SOUND GRID - PACKED */
+        .sound-engine { flex: 1; padding: 10px; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 5px; background: #fff; border: 2px inset #000; }
+        .btn { background: #eee; border: 2px outset #fff; font-size: 10px; padding: 8px 2px; text-align: center; cursor: pointer; box-shadow: 1px 1px 0 #000; }
+        .btn:active { border: 2px inset #fff; transform: translate(1px, 1px); }
+
+        /* NETWORK HUB */
+        .network-hub { padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .stat-box { background: #000; color: #0f0; font-family: monospace; padding: 10px; font-size: 12px; border: 2px solid #555; }
+        .blink { animation: blinker 1s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
 
         /* ADVANCED SETTINGS MODAL */
-        #adv-settings {
-            display: none; position: fixed; top: 50%; left: 50%;
-            transform: translate(-50%, -50%); width: 400px;
-            background: #fff; border: 5px solid #0055aa; padding: 20px;
-            box-shadow: 10px 10px 0 rgba(0,0,0,0.5); z-index: 1000;
+        #settings-menu {
+            display: none; position: fixed; top: 10%; left: 10%; width: 80%; height: 80%;
+            background: var(--win-grey); border: 4px outset #fff; z-index: 9999; padding: 20px;
+            box-shadow: 20px 20px 0 rgba(0,0,0,0.5); overflow-y: auto;
         }
-        .badge { color: red; font-weight: bold; animation: blink 0.5s infinite; }
-        @keyframes blink { 0% { opacity: 0; } 100% { opacity: 1; } }
+        .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .control-group { border: 2px groove #fff; padding: 15px; margin-bottom: 10px; }
+
+        /* BADGE POPUP */
+        #badge-toast {
+            display: none; position: fixed; bottom: 50px; right: 50px; background: #ffcc00;
+            border: 3px solid #000; padding: 20px; font-weight: bold; z-index: 10000;
+        }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <span>SYSTEM: sakurraaaaaa // BYPASS-FOR-NEHEMIAH</span>
-    <span id="badge-notify"></span>
+<div class="taskbar">
+    <span>[START] BLACKBIRD_OS_v4.0</span>
+    <span id="clock">17:33 PM</span>
 </div>
 
-<div class="main">
-    <div class="sound-grid" id="grid">
-        </div>
+<div class="desktop">
+    <div class="window">
+        <div class="window-header"><span>SOUND_SHREDDER_PRO</span><span>[?] [X]</span></div>
+        <div class="sound-engine" id="soundGrid"></div>
+    </div>
 
-    <div class="sidebar">
-        <div id="viewpoint">> WAITING FOR 11 KEY...</div>
-        <textarea id="code-in" placeholder="LUA/HTML SHREDDER..."></textarea>
-        <button onclick="execute()" style="margin-top:5px; background:#0055aa; color:white; border:2px outset #fff; padding:10px;">EXECUTE PAYLOAD</button>
+    <div class="window">
+        <div class="window-header"><span>NETWORK_HANDSHAKE_326</span><span>[-] [X]</span></div>
+        <div class="network-hub">
+            <div class="stat-box">
+                > TARGET: FBI VAN<br>
+                > IP_LOCAL: <span id="ip-addr">192.168.1.104</span><br>
+                > MASK_STATUS: <span style="color:red" id="mask-val">OFF</span><br>
+                > UPTIME: <span id="uptime">00:00:00</span>
+            </div>
+            <button onclick="toggleMask()" style="padding:10px; font-weight:bold; cursor:pointer;">FORCE_MASK_EXTENSIONS</button>
+            
+            <div class="window-header" style="margin-top:10px;"><span>PROXY_TUNNEL_LUA</span></div>
+            <textarea id="proxy-input" style="height:100px; background:#000; color:#0f0; font-family:monospace;" placeholder="Enter Payload..."></textarea>
+            <button onclick="alert('Routing through Blackbird Nodes...')" style="padding:5px;">ATTACH_TO_HOST</button>
+        </div>
     </div>
 </div>
 
-<div id="adv-settings">
-    <h2 class="badge">BADGE AWARDED! BROS TUFF AT TYPING 11</h2>
-    <h3>ADVANCED SETTINGS BY BRAYDEN:</h3>
-    <p>Pitch/Speed: <input type="range" id="pitch" min="0.5" max="2.0" step="0.1" value="1"></p>
-    <p>Volume: <input type="range" id="vol" min="0" max="2" step="0.1" value="1"></p>
-    <button onclick="document.getElementById('adv-settings').style.display='none'">CLOSE</button>
+<div id="settings-menu">
+    <div class="window-header"><span>ADVANCED SETTINGS BY BRAYDEN: ELITE_LEVEL_ONLY</span><button onclick="closeSettings()">[X]</button></div>
+    <h1 style="color: #000080; border-bottom: 2px solid #000;">GOD_MODE_CONTROLS</h1>
+    
+    <div class="settings-grid">
+        <div class="control-group">
+            <h3>AUDIO_MODULATION</h3>
+            Pitch: <input type="range" id="pitch" min="0.1" max="3" step="0.1" value="1"><br>
+            Volume: <input type="range" id="vol" min="0" max="3" step="0.1" value="1"><br>
+            Echo Depth: <input type="range" min="0" max="100" value="0">
+        </div>
+        <div class="control-group">
+            <h3>GUI_SHREDDER</h3>
+            Background Color: <input type="color" id="bg-color" value="#5a7edc" onchange="document.body.style.background=this.value"><br>
+            Terminal Color: <input type="color" value="#00ff00"><br>
+            <button onclick="alert('Styles Shredded!')">RELOAD_CLASSIC_ASSETS</button>
+        </div>
+        <div class="control-group">
+            <h3>EXT_BYPASS_LOGIC</h3>
+            <p style="font-size: 11px;">Note: Simulating extension injection for Nehemiah...</p>
+            <button onclick="shredExtensions()">ACTIVATE_BYPASS_V4</button>
+        </div>
+    </div>
+</div>
+
+<div id="badge-toast">
+    <h2 style="margin:0;">🏆 BADGE AWARDED!</h2>
+    <p>Bros tuff at typing 11</p>
 </div>
 
 <script>
-    // 1. SOUND DATABASE (The big list)
+    // 1. DYNAMIC SOUND GRID (150+ BUTTONS)
     const sounds = [
-        { name: "POU ESTARODO", url: "https://www.myinstants.com/media/sounds/pou-estourado.mp3" },
-        { name: "VINE BOOM", url: "https://www.myinstants.com/media/sounds/vine-boom.mp3" },
-        { name: "FBI OPEN UP", url: "https://www.myinstants.com/media/sounds/fbi-open-up-sfx.mp3" },
-        { name: "TACO BELL", url: "https://www.myinstants.com/media/sounds/taco-bell-bong.mp3" },
-        { name: "EMOTIONAL DMG", url: "https://www.myinstants.com/media/sounds/emotional-damage-meme.mp3" },
-        { name: "BRUH", url: "https://www.myinstants.com/media/sounds/movie_1.mp3" }
-        // We will loop to fill the grid so it stays "PACKED"
+        {n: "POU_EST", u: "https://www.myinstants.com/media/sounds/pou-estourado.mp3"},
+        {n: "VINE_B", u: "https://www.myinstants.com/media/sounds/vine-boom.mp3"},
+        {n: "FBI_OP", u: "https://www.myinstants.com/media/sounds/fbi-open-up-sfx.mp3"},
+        {n: "TACO_B", u: "https://www.myinstants.com/media/sounds/taco-bell-bong.mp3"},
+        {n: "EMO_DMG", u: "https://www.myinstants.com/media/sounds/emotional-damage-meme.mp3"}
     ];
-
-    const grid = document.getElementById('grid');
-    for (let i = 0; i < 84; i++) {
+    
+    const grid = document.getElementById('soundGrid');
+    for(let i=0; i<180; i++) {
         let s = sounds[i % sounds.length];
-        let b = document.createElement('div');
-        b.className = 'btn';
-        b.innerHTML = `🔊 ${s.name} #${i+1}`;
-        b.onclick = () => play(s.url);
-        grid.appendChild(b);
+        let d = document.createElement('div');
+        d.className = 'btn';
+        d.innerHTML = `[${i+1}]<br>${s.n}`;
+        d.onclick = () => { let a = new Audio(s.u); a.playbackRate = document.getElementById('pitch').value; a.volume = Math.min(document.getElementById('vol').value, 1); a.play(); };
+        grid.appendChild(d);
     }
 
-    // 2. AUDIO ENGINE
-    function play(url) {
-        let a = new Audio(url);
-        a.playbackRate = document.getElementById('pitch').value;
-        a.volume = Math.min(document.getElementById('vol').value, 1);
-        a.play();
-    }
-
-    // 3. THE "11" SECRET KEY
-    let keyHistory = "";
-    window.addEventListener('keydown', (e) => {
-        // Ignore if typing in the textarea
-        if (e.target.tagName === "TEXTAREA") return;
-        
-        keyHistory += e.key;
-        if (keyHistory.endsWith("11")) {
-            document.getElementById('adv-settings').style.display = 'block';
-            document.getElementById('badge-notify').innerHTML = "<span class='badge'>[ ELITE TYPER ]</span>";
-            keyHistory = ""; // Reset
+    // 2. THE SECRET "11" KEY
+    let history = "";
+    window.onkeydown = (e) => {
+        if(e.target.tagName === "TEXTAREA") return;
+        history += e.key;
+        if(history.endsWith("11")) {
+            document.getElementById('settings-menu').style.display = 'block';
+            document.getElementById('badge-toast').style.display = 'block';
+            setTimeout(() => { document.getElementById('badge-toast').style.display = 'none'; }, 3000);
+            history = "";
         }
-    });
+    };
 
-    function execute() {
-        document.getElementById('viewpoint').innerHTML = document.getElementById('code-in').value;
+    function closeSettings() { document.getElementById('settings-menu').style.display = 'none'; }
+
+    // 3. FAKE NETWORK LOGIC (FOR THE VIBE)
+    function toggleMask() {
+        const m = document.getElementById('mask-val');
+        m.innerHTML = "INJECTING...";
+        setTimeout(() => { m.innerHTML = "ACTIVE"; m.style.color = "#0f0"; m.classList.add('blink'); }, 2000);
     }
+
+    function shredExtensions() {
+        alert("Shredding Linewise Nodes... Extension Cloak Activated.");
+    }
+
+    // CLOCK & UPTIME
+    setInterval(() => {
+        document.getElementById('clock').innerHTML = new Date().toLocaleTimeString();
+    }, 1000);
 </script>
 </body>
 </html>
