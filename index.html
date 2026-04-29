@@ -1,1 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BLACKBIRD // TERMINAL.V2</title>
+    <style>
+        /* 2006 "ELITE HACKER" AESTHETIC */
+        body {
+            background-color: #000;
+            color: #f00; /* Neon Red */
+            font-family: "Courier New", Courier, monospace;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* For the stream effect */
+        }
 
+        /* Top Red Banner */
+        .header {
+            background-color: #aa0000;
+            color: white;
+            padding: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            border-bottom: 2px solid #fff;
+            text-align: center;
+            letter-spacing: 3px;
+        }
+
+        /* MAIN DASHBOARD LAYOUT */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: 1fr 150px;
+            height: calc(100vh - 30px);
+            gap: 10px;
+            padding: 10px;
+        }
+
+        /* General Section Styling */
+        .section {
+            border: 2px solid #550000;
+            background-color: #050000;
+            padding: 10px;
+            position: relative;
+        }
+
+        .section-title {
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            background-color: #000;
+            color: #fff;
+            padding: 0 5px;
+            font-size: 12px;
+            border: 1px solid #550000;
+        }
+
+        /* --- SIDEBAR: STATUS STREAM (The "BRRR") --- */
+        .status-sidebar {
+            grid-row: 1 / 3;
+            overflow: hidden;
+            font-size: 10px;
+            line-height: 1.2;
+            color: #aa0000;
+        }
+
+        .stream-line {
+            white-space: nowrap;
+            animation: flicker 0.1s infinite;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        /* --- MAIN AREA: EXECUTOR & SCREEN --- */
+        .executor-area {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* The Small Screen/Viewpoint */
+        .viewpoint {
+            flex: 1;
+            border: 2px inset #550000;
+            background: #000;
+        }
+
+        .viewpoint iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* The Input and Buttons */
+        .control-panel {
+            height: 100px;
+            display: grid;
+            grid-template-columns: 1fr 100px;
+            gap: 5px;
+        }
+
+        textarea, input {
+            background: #000;
+            color: #f00;
+            border: 1px solid #f00;
+            font-family: inherit;
+            padding: 5px;
+        }
+
+        button {
+            background: #aa0000;
+            color: white;
+            border: 2px outset #f00;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+        }
+
+        button:hover { background: #f00; color: black; }
+
+        /* --- BOTTOM AREA: LOGS --- */
+        .logs {
+            grid-column: 2 / 3;
+            overflow-y: scroll;
+            font-size: 11px;
+            color: #fff;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">BLACKBIRD.Y2K // ELITE SYSTEMS INTERFACE // v2.6.08</div>
+
+    <div class="dashboard">
+
+        <div class="section status-sidebar" id="stream">
+            <div class="section-title">PACKET_STREAM</div>
+            </div>
+
+        <div class="executor-area">
+            
+            <div class="section viewpoint">
+                <div class="section-title">VIEWPOINT // OUT</div>
+                <iframe id="view-frame" src="about:blank"></iframe>
+            </div>
+
+            <div class="section control-panel">
+                <div class="section-title">COMMAND_INPUT</div>
+                <textarea id="code-input" placeholder="Enter LUA/HTML/JS..."></textarea>
+                <div style="display: flex; flex-direction: column; gap: 5px;">
+                    <input type="text" id="url-input" placeholder="https://site.com">
+                    <button onclick="runCode()">EXECUTE</button>
+                    <button onclick="runUrl()">LOAD URL</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section logs" id="log-output">
+            <div class="section-title">SESSION_LOG</div>
+            <div>[OK] Terminal initialized.</div>
+            <div>[OK] Security handshake completed.</div>
+        </div>
+
+    </div>
+
+    <script>
+        // 1. THE STATUS STREAM (The "BRRR")
+        const stream = document.getElementById('stream');
+        const hexCodes = ['X5_REQ', 'SYS_BRK', 'P_DROP', 'F_W_BP', 'AUTH_FAIL', 'TRK_KIL'];
+
+        function addStreamLine() {
+            const line = document.createElement('div');
+            line.className = 'stream-line';
+            const randomHex = Math.random().toString(16).substr(2, 8).toUpperCase();
+            const randomCode = hexCodes[Math.floor(Math.random() * hexCodes.length)];
+            line.textContent = `>> [${randomHex}] [${randomCode}] ATTACK_VECTOR_${randomCode}... OK`;
+            stream.appendChild(line);
+
+            // Maintain the "shredded" look by constantly removing old lines
+            if (stream.children.length > 50) {
+                stream.removeChild(stream.children[1]);
+            }
+        }
+        setInterval(addStreamLine, 50); -- Makes it go "BRRRR"
+
+        // 2. EXECUTOR LOGIC
+        const viewFrame = document.getElementById('view-frame');
+        const codeInput = document.getElementById('code-input');
+        const urlInput = document.getElementById('url-input');
+        const logOutput = document.getElementById('log-output');
+
+        function addLog(text) {
+            const entry = document.createElement('div');
+            entry.textContent = `> ${text}`;
+            logOutput.appendChild(entry);
+            logOutput.scrollTop = logOutput.scrollHeight;
+        }
+
+        function runUrl() {
+            const url = urlInput.url;
+            if (url) {
+                addLog(`LOADING EXTERNAL NODE: ${url}`);
+                viewFrame.src = url;
+            } else {
+                addLog("ERROR: NO URL PROVIDED.");
+            }
+        }
+
+        function runCode() {
+            const code = codeInput.value;
+            addLog("EXECUTING LOCAL PAYLOAD...");
+            try {
+                // To display HTML, write to the iframe
+                viewFrame.contentWindow.document.open();
+                viewFrame.contentWindow.document.write(code);
+                viewFrame.contentWindow.document.close();
+            } catch (e) {
+                addLog(`EXECUTION ERROR: ${e.message}`);
+            }
+        }
+    </script>
+</body>
+</html>
