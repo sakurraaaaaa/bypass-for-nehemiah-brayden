@@ -2,140 +2,124 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>BLACKBIRD // WHITE-OUT.V2</title>
+    <title>BLACKBIRD // SOUND_SHREDDER.V3</title>
     <style>
-        /* 2006 CLASSIC "CLEAN" AESTHETIC */
         body {
-            background-color: #ffffff;
-            color: #000000;
-            font-family: "Tahoma", sans-serif;
-            margin: 0; padding: 0;
-            border: 10px solid #cccccc;
-            height: 97vh;
+            background: #fff; color: #000; font-family: "Tahoma", sans-serif;
+            margin: 0; overflow: hidden; height: 100vh;
         }
-
+        /* TOP BANNER */
         .header {
-            background-color: #0055aa;
-            color: white;
-            padding: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            border-bottom: 3px solid #000;
-            text-align: left;
+            background: #0055aa; color: #fff; padding: 10px;
+            font-weight: bold; border-bottom: 4px solid #000;
+            display: flex; justify-content: space-between;
         }
-
-        .main-layout {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            height: calc(100% - 40px);
+        /* LAYOUT */
+        .main { display: grid; grid-template-columns: 1fr 350px; height: calc(100% - 45px); }
+        
+        /* SOUND GRID (80+ Buttons) */
+        .sound-grid {
+            padding: 15px; overflow-y: auto; display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 8px; background: #eee; border-right: 3px solid #000;
         }
-
-        /* SIDEBAR: SOUNDBOARD */
-        .soundboard {
-            border-right: 2px solid #000;
-            background: #f0f0f0;
-            padding: 10px;
-            overflow-y: auto;
+        .btn {
+            background: #ddd; border: 2px outset #fff; padding: 10px;
+            font-size: 10px; font-weight: bold; cursor: pointer;
+            text-align: center; box-shadow: 2px 2px 0 #000;
+            transition: transform 0.1s;
         }
+        .btn:active { border: 2px inset #fff; transform: scale(0.95); }
 
-        .instant-btn {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 5px;
-            background: #e1e1e1;
-            border: 2px outset #fff;
-            cursor: pointer;
-            font-weight: bold;
-            text-align: left;
+        /* SIDEBAR / EXECUTOR */
+        .sidebar { padding: 15px; background: #fff; display: flex; flex-direction: column; }
+        #viewpoint { flex: 1; border: 2px solid #000; padding: 10px; font-family: monospace; background: #fafafa; }
+        textarea { width: 100%; height: 80px; border: 2px solid #000; margin-top: 10px; }
+
+        /* ADVANCED SETTINGS MODAL */
+        #adv-settings {
+            display: none; position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); width: 400px;
+            background: #fff; border: 5px solid #0055aa; padding: 20px;
+            box-shadow: 10px 10px 0 rgba(0,0,0,0.5); z-index: 1000;
         }
-
-        .instant-btn:active { border: 2px inset #fff; }
-
-        /* VIEWPORT */
-        .viewport-area {
-            display: flex;
-            flex-direction: column;
-            padding: 10px;
-            background: #fff;
-        }
-
-        #display-box {
-            flex: 1;
-            border: 2px solid #000;
-            background: #eee;
-            margin-bottom: 10px;
-            overflow: auto;
-            padding: 10px;
-        }
-
-        .controls {
-            display: flex;
-            gap: 10px;
-        }
-
-        input, textarea {
-            border: 2px solid #000;
-            padding: 5px;
-            font-family: monospace;
-        }
-
-        button {
-            background: #0055aa;
-            color: white;
-            border: 2px outset #fff;
-            padding: 5px 15px;
-            cursor: pointer;
-        }
+        .badge { color: red; font-weight: bold; animation: blink 0.5s infinite; }
+        @keyframes blink { 0% { opacity: 0; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <div class="header">SYSTEM_OPERATOR: sakurraaaaaa // NODE: 326306</div>
+<div class="header">
+    <span>SYSTEM: sakurraaaaaa // BYPASS-FOR-NEHEMIAH</span>
+    <span id="badge-notify"></span>
+</div>
 
-    <div class="main-layout">
-        <div class="soundboard">
-            <h3 style="margin-top:0;">SOUND_EXPANSION</h3>
-            <button class="instant-btn" onclick="playSound('https://www.myinstants.com/media/sounds/discord-notification.mp3')">🔊 DISCORD_NOTIF</button>
-            <button class="instant-btn" onclick="playSound('https://www.myinstants.com/media/sounds/taco-bell-bong.mp3')">🔊 TACO_BELL</button>
-            <button class="instant-btn" onclick="playSound('https://www.myinstants.com/media/sounds/vine-boom.mp3')">🔊 VINE_BOOM</button>
-            <button class="instant-btn" onclick="playSound('https://www.myinstants.com/media/sounds/emotional-damage-meme.mp3')">🔊 EMOTIONAL_DMG</button>
-            <p style="font-size: 10px;">[!] Links fetched from myinstants.com</p>
+<div class="main">
+    <div class="sound-grid" id="grid">
         </div>
 
-        <div class="viewport-area">
-            <div id="display-box">
-                <p>> Waiting for payload execution...</p>
-            </div>
-
-            <div class="controls">
-                <textarea id="code-in" style="flex:1; height: 60px;" placeholder="Paste HTML/CSS here..."></textarea>
-                <div style="display:flex; flex-direction:column; gap:5px;">
-                    <input type="text" id="url-in" placeholder="Enter .png or .txt URL">
-                    <button onclick="executeCode()">SHRED_EXECUTE</button>
-                    <button onclick="loadMedia()">LOAD_MEDIA</button>
-                </div>
-            </div>
-        </div>
+    <div class="sidebar">
+        <div id="viewpoint">> WAITING FOR 11 KEY...</div>
+        <textarea id="code-in" placeholder="LUA/HTML SHREDDER..."></textarea>
+        <button onclick="execute()" style="margin-top:5px; background:#0055aa; color:white; border:2px outset #fff; padding:10px;">EXECUTE PAYLOAD</button>
     </div>
+</div>
 
-    <script>
-        function playSound(url) {
-            let audio = new Audio(url);
-            audio.play();
-        }
+<div id="adv-settings">
+    <h2 class="badge">BADGE AWARDED! BROS TUFF AT TYPING 11</h2>
+    <h3>ADVANCED SETTINGS BY BRAYDEN:</h3>
+    <p>Pitch/Speed: <input type="range" id="pitch" min="0.5" max="2.0" step="0.1" value="1"></p>
+    <p>Volume: <input type="range" id="vol" min="0" max="2" step="0.1" value="1"></p>
+    <button onclick="document.getElementById('adv-settings').style.display='none'">CLOSE</button>
+</div>
 
-        function executeCode() {
-            const code = document.getElementById('code-in').value;
-            const display = document.getElementById('display-box');
-            display.innerHTML = code; // Directly injects your HTML/CSS into the screen
-        }
+<script>
+    // 1. SOUND DATABASE (The big list)
+    const sounds = [
+        { name: "POU ESTARODO", url: "https://www.myinstants.com/media/sounds/pou-estourado.mp3" },
+        { name: "VINE BOOM", url: "https://www.myinstants.com/media/sounds/vine-boom.mp3" },
+        { name: "FBI OPEN UP", url: "https://www.myinstants.com/media/sounds/fbi-open-up-sfx.mp3" },
+        { name: "TACO BELL", url: "https://www.myinstants.com/media/sounds/taco-bell-bong.mp3" },
+        { name: "EMOTIONAL DMG", url: "https://www.myinstants.com/media/sounds/emotional-damage-meme.mp3" },
+        { name: "BRUH", url: "https://www.myinstants.com/media/sounds/movie_1.mp3" }
+        // We will loop to fill the grid so it stays "PACKED"
+    ];
 
-        function loadMedia() {
-            const url = document.getElementById('url-in').value;
-            const display = document.getElementById('display-box');
-            // If it's a raw URL, we show it as a link since IFRAMES are blocked by schools
-            display.innerHTML = `<h3>EXTERNAL LINK READY:</h3><a href="${url}" target="_blank">${url}</a><br><p>Browsers block internal loading for security. Click to open in new node.</p>`;
+    const grid = document.getElementById('grid');
+    for (let i = 0; i < 84; i++) {
+        let s = sounds[i % sounds.length];
+        let b = document.createElement('div');
+        b.className = 'btn';
+        b.innerHTML = `🔊 ${s.name} #${i+1}`;
+        b.onclick = () => play(s.url);
+        grid.appendChild(b);
+    }
+
+    // 2. AUDIO ENGINE
+    function play(url) {
+        let a = new Audio(url);
+        a.playbackRate = document.getElementById('pitch').value;
+        a.volume = Math.min(document.getElementById('vol').value, 1);
+        a.play();
+    }
+
+    // 3. THE "11" SECRET KEY
+    let keyHistory = "";
+    window.addEventListener('keydown', (e) => {
+        // Ignore if typing in the textarea
+        if (e.target.tagName === "TEXTAREA") return;
+        
+        keyHistory += e.key;
+        if (keyHistory.endsWith("11")) {
+            document.getElementById('adv-settings').style.display = 'block';
+            document.getElementById('badge-notify').innerHTML = "<span class='badge'>[ ELITE TYPER ]</span>";
+            keyHistory = ""; // Reset
         }
-    </script>
+    });
+
+    function execute() {
+        document.getElementById('viewpoint').innerHTML = document.getElementById('code-in').value;
+    }
+</script>
 </body>
 </html>
