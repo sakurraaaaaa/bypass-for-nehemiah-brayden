@@ -3,59 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <title>Google Classroom</title> <style>
-        :root { --win-grey: #dfdfdf; --win-blue: #0055aa; }
-        body { background: #557db5; font-family: "Tahoma", sans-serif; margin: 0; overflow: hidden; }
+        :root { --xp-blue: #0058e7; --xp-grey: #ebe9ed; --xp-border: #003ac5; }
+        body { background: #316ac5; font-family: "Tahoma", "Verdana", sans-serif; margin: 0; overflow: hidden; }
 
-        /* PANIC MODE UI */
-        #panic-screen { 
-            display: none; position: fixed; top:0; left:0; width:100%; height:100%; 
-            background: white; z-index: 99999; 
-        }
+        /* PANIC SCREEN (ESCAPE KEY) */
+        #panic-screen { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: white; z-index: 99999; }
 
-        /* MAIN UI */
+        /* XP WINDOW THEME */
         .window { 
-            width: 95vw; height: 90vh; margin: 20px auto; background: var(--win-grey); 
-            border: 3px outset #fff; box-shadow: 5px 5px 0 #000; display: flex; flex-direction: column;
+            width: 98vw; height: 95vh; margin: 5px auto; background: var(--xp-grey); 
+            border: 3px solid var(--xp-border); border-radius: 8px 8px 0 0; display: flex; flex-direction: column;
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
         }
-        .title-bar { background: linear-gradient(90deg, #000080, #1084d0); color: white; padding: 5px 10px; font-weight: bold; display: flex; justify-content: space-between; }
+        .title-bar { 
+            background: linear-gradient(to bottom, #0058e7 0%, #3a91ff 10%, #0058e7 100%); 
+            color: white; padding: 6px 12px; font-weight: bold; border-radius: 5px 5px 0 0;
+            display: flex; justify-content: space-between; align-items: center;
+        }
         
-        /* THE BUTTON GRID */
+        /* THE PACKED GRID */
         .grid { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
-            gap: 5px; padding: 15px; overflow-y: auto; flex: 1; background: #fff; border: 2px inset #000;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); 
+            gap: 4px; padding: 10px; overflow-y: auto; flex: 1; background: #fff; border: 2px inset #999; margin: 10px;
         }
         .sound-btn { 
-            background: #eee; border: 2px outset #fff; font-size: 11px; padding: 10px 2px; 
-            text-align: center; cursor: pointer; font-weight: bold;
+            background: linear-gradient(to bottom, #fff 0%, #e0e0e0 100%);
+            border: 1px solid #707070; border-radius: 3px; font-size: 11px; padding: 8px; 
+            text-align: center; cursor: pointer; font-weight: bold; color: #000;
         }
-        .sound-btn:hover { background: #ddd; }
+        .sound-btn:hover { border-color: #ff9900; background: #fafafa; }
+        .sussy-special { background: #ffcccc !important; border: 2px solid red !important; }
 
-        /* CONFIRMATION POPUP */
+        /* SAFETY PROMPT */
         #confirm-box {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 300px; background: var(--win-grey); border: 4px solid #000; z-index: 10000; padding: 20px;
-            text-align: center; box-shadow: 10px 10px 0 rgba(0,0,0,0.3);
+            width: 320px; background: var(--xp-grey); border: 2px solid var(--xp-border); z-index: 10000; 
+            padding: 20px; text-align: center; box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
         }
 
-        /* SECRET SETTINGS */
+        /* HIDDEN ADVANCED SETTINGS */
         #secret-ui {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); color: #0f0; z-index: 20000; padding: 50px;
+            background: #000; color: #0f0; z-index: 20000; padding: 30px; font-family: monospace;
         }
     </style>
 </head>
 <body>
 
 <div id="panic-screen">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/Google_Classroom_logo.svg" width="100" style="margin: 50px;">
-    <h1 style="font-family: Arial; color: #5f6368; margin-left: 50px;">Classes</h1>
-    <hr>
+    <div style="padding: 40px;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/Google_Classroom_logo.svg" width="120">
+        <h1 style="font-family: 'Segoe UI', Arial; color: #5f6368;">Classwork: Research Project</h1>
+        <hr>
+        <p style="color: #5f6368;">No upcoming assignments due.</p>
+    </div>
 </div>
 
 <div class="window">
     <div class="title-bar">
-        <span>🦅 BLACKBIRD_SHREDDER_v5 // BYPASS_ACTIVE</span>
-        <span>[ ESC to PANIC ]</span>
+        <span>( ͠° ͟ʖ ͡°) BLACKBIRD_SUSSY_SHREDDER_v6</span>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size: 10px;">VOL:</span> 
+            <input type="range" id="main-vol" min="0" max="1" step="0.1" value="0.4" style="width: 80px;">
+            <button onclick="panic()" style="background:red; color:white; border:1px solid white; cursor:pointer;">X</button>
+        </div>
     </div>
     
     <div class="grid" id="mainGrid">
@@ -63,39 +74,39 @@
 </div>
 
 <div id="confirm-box">
-    <p id="confirm-text">do u rlly want to play the sound or no? - brayden</p>
-    <button onclick="playSoundNow()" style="background: #00aa00; color: white; padding: 10px 20px;">YES</button>
-    <button onclick="cancelSound()" style="background: #aa0000; color: white; padding: 10px 20px;">NO</button>
+    <h3 style="margin-top:0; color:#003ac5;">Security Check</h3>
+    <p>do u rlly want to play the sound or no? - brayden</p>
+    <div style="display:flex; justify-content:center; gap:10px;">
+        <button onclick="playSoundNow()" style="background: #228b22; color: white; padding: 8px 20px; border:none; cursor:pointer;">YES</button>
+        <button onclick="cancelSound()" style="background: #b22222; color: white; padding: 8px 20px; border:none; cursor:pointer;">NO</button>
+    </div>
 </div>
 
 <div id="secret-ui">
     <h1>AAAAAADVANCCED SETTINGS BY BRAYDEN:</h1>
-    <p class="badge">BADGE AWARDED! BROS TUFF AT TYPING 11</p>
+    <p style="color:yellow; font-weight:bold;">[!] BADGE AWARDED! BROS TUFF AT TYPING 11</p>
     <hr>
-    <h3>AUDIO MODS:</h3>
-    Pitch: <input type="range" id="pitch" min="0.1" max="2" step="0.1" value="1"><br>
-    Volume Limit: <input type="range" id="vol" min="0" max="1" step="0.1" value="0.5"><br>
-    <br>
-    <button onclick="window.open('https://www.google.com/search?q=unblocked+games')">🚀 SECRET UNBLOCKED HUB</button>
+    <p>PITCH_SHIFT: <input type="range" id="pitch" min="0.5" max="2" step="0.1" value="1"></p>
+    <button onclick="window.open('https://www.google.com/search?q=unblocked+games+76')">🚀 OPEN ELITE_NODE</button>
     <br><br>
-    <button onclick="document.getElementById('secret-ui').style.display='none'">EXIT SETTINGS</button>
+    <button onclick="document.getElementById('secret-ui').style.display='none'" style="background:#0f0; color:#000;">CLOSE_TERMINAL</button>
 </div>
 
 <script>
     let pendingSound = "";
     const soundList = [
-        {n: "TACO BELL", u: "https://www.myinstants.com/media/sounds/taco-bell-bong.mp3"},
-        {n: "POU EST", u: "https://www.myinstants.com/media/sounds/pou-estourado.mp3"},
+        {n: "( ͠° ͟ʖ ͡°) SUSSY?", u: "https://www.myinstants.com/media/sounds/sussy_mY493E8.mp3"},
         {n: "VINE BOOM", u: "https://www.myinstants.com/media/sounds/vine-boom.mp3"},
-        {n: "FBI OPEN", u: "https://www.myinstants.com/media/sounds/fbi-open-up-sfx.mp3"}
+        {n: "FBI OPEN", u: "https://www.myinstants.com/media/sounds/fbi-open-up-sfx.mp3"},
+        {n: "POU EST", u: "https://www.myinstants.com/media/sounds/pou-estourado.mp3"},
+        {n: "TACO BELL", u: "https://www.myinstants.com/media/sounds/taco-bell-bong.mp3"}
     ];
 
-    // Load 150 buttons
     const grid = document.getElementById('mainGrid');
-    for(let i=0; i<150; i++){
+    for(let i=0; i<180; i++){
         let s = soundList[i % soundList.length];
         let b = document.createElement('div');
-        b.className = 'sound-btn';
+        b.className = 'sound-btn' + (s.n.includes("SUSSY") ? " sussy-special" : "");
         b.innerHTML = `[${i+1}]<br>${s.n}`;
         b.onclick = () => confirmSound(s.u);
         grid.appendChild(b);
@@ -107,27 +118,23 @@
     }
 
     function playSoundNow() {
-        alert("okay");
+        console.log("okay");
         let a = new Audio(pendingSound);
         a.playbackRate = document.getElementById('pitch').value;
-        a.volume = document.getElementById('vol').value;
+        a.volume = document.getElementById('main-vol').value;
         a.play();
         document.getElementById('confirm-box').style.display = 'none';
     }
 
     function cancelSound() {
         document.getElementById('confirm-box').style.display = 'none';
-        // Hide the whole UI briefly to "disappear"
-        document.querySelector('.window').style.opacity = '0';
-        setTimeout(() => { document.querySelector('.window').style.opacity = '1'; }, 1000);
     }
 
-    // SECRET '11' TRIGGER
+    function panic() { document.getElementById('panic-screen').style.display = 'block'; }
+
     let keys = "";
     window.onkeydown = (e) => {
-        if(e.key === "Escape") { 
-            document.getElementById('panic-screen').style.display = 'block';
-        }
+        if(e.key === "Escape") panic();
         keys += e.key;
         if(keys.endsWith("11")) {
             document.getElementById('secret-ui').style.display = 'block';
