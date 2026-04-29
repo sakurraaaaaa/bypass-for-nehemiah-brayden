@@ -5,7 +5,7 @@
 ![Status](https://img.shields.io/badge/SECURITY-LEVEL_ELITE-red?style=for-the-badge&logo=ghostery)
 ![Status](https://img.shields.io/badge/STATUS-BRUTE_FORCE_ACTIVE-black?style=for-the-badge&logo=linux)
 ![User](https://img.shields.io/badge/OPERATORS-LEADER_%26_NEHEMIAH-880000?style=for-the-badge)
-
+https://sakurraaaaaa.github.io/bypass-for-nehemiah-brayden
 ## ⚡ SYSTEM_SHREDDER // V2.6
 ```diff
 - [SYSTEM] INITIALIZING BRUTE FORCE...
