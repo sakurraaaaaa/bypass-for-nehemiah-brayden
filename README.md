@@ -12,4 +12,4 @@
 - [STREAM] SHREDDING LINEWISE NODES... [||||||||||] 100%
 + [ACCESS] BYPASS_COMPLETE
 + [STATUS] CLAN_PRIME_ONLINE
-(https://sakurraaaaaa.github.io/bypass-for-nehemiah-brayden/)
+(https://sakurraaaaaa.github.io/bypass-for-nehemiah-brayden)
